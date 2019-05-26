@@ -25,7 +25,8 @@ GT User ID: tb34 (replace with your User ID)
 GT ID: 900897987 (replace with your GT ID) 			  		 			 	 	 		 		 	  		   	  			  	
 """ 			  		 			 	 	 		 		 	  		   	  			  	
  			  		 			 	 	 		 		 	  		   	  			  	
-import numpy as np 			  		 			 	 	 		 		 	  		   	  			  	
+import numpy as np 	
+import matplotlib.pyplot as plt		  		 			 	 	 		 		 	  		   	  			  	
  			  		 			 	 	 		 		 	  		   	  			  	
 def author(): 			  		 			 	 	 		 		 	  		   	  			  	
         return 'tb34' # replace tb34 with your Georgia Tech username. 			  		 			 	 	 		 		 	  		   	  			  	
@@ -44,7 +45,30 @@ def test_code():
 	np.random.seed(gtid()) # do this only once 			  		 			 	 	 		 		 	  		   	  			  	
 	print get_spin_result(win_prob) # test the roulette spin 			  		 			 	 	 		 		 	  		   	  			  	
  			  		 			 	 	 		 		 	  		   	  			  	
-	# add your code here to implement the experiments 			  		 			 	 	 		 		 	  		   	  			  	
- 			  		 			 	 	 		 		 	  		   	  			  	
+	# add your code here to implement the experiments 	
+
+def strategy1(win_prob):
+	winnings_array = np.zeros(1000)
+	episode_winnings = 0
+	successive_bets = 0
+	while episode_winnings < 80:
+		won = False
+		bet_amount = 1
+		while not won:
+			won = get_spin_result(win_prob)
+			successive_bets += 1
+			if won == True:
+				episode_winnings += bet_amount
+			else:
+				episode_winnings -= bet_amount
+				bet_amount *= 2	
+			winnings_array[successive_bets] = episode_winnings
+
+			if successive_bets >= 1000 or episode_winnings >= 80:
+				winnings_array[successive_bets:].fill(winnings_array[successive_bets])
+				break
+
+ 	return 	winnings_array
+
 if __name__ == "__main__": 			  		 			 	 	 		 		 	  		   	  			  	
-    test_code() 			  		 			 	 	 		 		 	  		   	  			  	
+    print strategy1(.5)		  		 			 	 	 		 		 	  		   	  			  	
